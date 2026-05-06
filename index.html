@@ -58,7 +58,6 @@
   .header {
     text-align: center;
     margin-bottom: 52px;
-    animation: fadeDown 0.7s ease both;
   }
 
   .badge {
@@ -130,7 +129,6 @@
     text-transform: uppercase;
     letter-spacing: 0.12em;
     margin-bottom: 20px;
-    animation: fadeUp 0.6s 0.2s ease both;
   }
 
   /* GRID */
@@ -153,13 +151,7 @@
     overflow: hidden;
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     cursor: pointer;
-    animation: fadeUp 0.5s ease both;
   }
-
-  .app-card:nth-child(1) { animation-delay: 0.15s; }
-  .app-card:nth-child(2) { animation-delay: 0.25s; }
-  .app-card:nth-child(3) { animation-delay: 0.35s; }
-  .app-card:nth-child(4) { animation-delay: 0.45s; }
 
   .app-card::before {
     content: '';
@@ -274,7 +266,6 @@
   .footer {
     margin-top: 72px;
     text-align: center;
-    animation: fadeUp 0.6s 0.6s ease both;
   }
 
   .footer-line {
@@ -299,9 +290,19 @@
   }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(24px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+
+  .header { opacity: 0; }
+  .section-title { opacity: 0; }
+  .app-card { opacity: 0; }
+  .footer { opacity: 0; }
+
+  .header.go   { animation: fadeDown 0.6s ease forwards; }
+  .section-title.go { animation: fadeUp 0.5s 0.3s ease forwards; }
+  .app-card.go { animation: fadeUp 0.5s ease forwards; }
+  .footer.go   { animation: fadeUp 0.5s ease forwards; }
 
   @media (max-width: 600px) {
     .wrapper { padding: 40px 16px 60px; }
@@ -386,6 +387,31 @@
 </div>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  window.addEventListener('load', function () {
+    // Header
+    setTimeout(function () {
+      document.querySelector('.header').classList.add('go');
+    }, 50);
+
+    // Section title
+    setTimeout(function () {
+      document.querySelector('.section-title').classList.add('go');
+    }, 300);
+
+    // Cards staggered
+    var cards = document.querySelectorAll('.app-card');
+    cards.forEach(function (card, i) {
+      setTimeout(function () {
+        card.classList.add('go');
+      }, 400 + i * 100);
+    });
+
+    // Footer
+    setTimeout(function () {
+      document.querySelector('.footer').classList.add('go');
+    }, 400 + cards.length * 100 + 100);
+  });
 </script>
 </body>
 </html>
