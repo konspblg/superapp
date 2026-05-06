@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KONSPBLG SUPER APP</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: rgba(255,255,255,0.07);
+    --accent: #3b82f6;
+    --accent2: #f59e0b;
+    --accent3: #10b981;
+    --text: #f1f5f9;
+    --muted: #64748b;
+    --glow: rgba(59,130,246,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glow blobs */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.7s ease both;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .logo-icon {
+    width: 56px; height: 56px;
+    background: linear-gradient(135deg, var(--accent), #1d4ed8);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 0 30px rgba(59,130,246,0.4);
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    background: linear-gradient(135deg, #fff 40%, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .tagline {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .tagline span {
+    color: var(--accent2);
+  }
+
+  .subinfo {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0 32px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .divider-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── APP CARDS ── */
+  .section-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 20px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .apps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  /* Card */
+  .app-card {
+    display: block;
+    text-decoration: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .app-card:nth-child(1) { animation-delay: 0.15s; }
+  .app-card:nth-child(2) { animation-delay: 0.25s; }
+  .app-card:nth-child(3) { animation-delay: 0.35s; }
+  .app-card:nth-child(4) { animation-delay: 0.45s; }
+  .app-card:nth-child(5) { animation-delay: 0.55s; }
+
+  .app-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: inherit;
+  }
+
+  .app-card[data-color="blue"]::before   { background: radial-gradient(circle at top left, rgba(59,130,246,0.1) 0%, transparent 60%); }
+  .app-card[data-color="amber"]::before  { background: radial-gradient(circle at top left, rgba(245,158,11,0.1) 0%, transparent 60%); }
+  .app-card[data-color="green"]::before  { background: radial-gradient(circle at top left, rgba(16,185,129,0.1) 0%, transparent 60%); }
+  .app-card[data-color="purple"]::before { background: radial-gradient(circle at top left, rgba(139,92,246,0.1) 0%, transparent 60%); }
+  .app-card[data-color="rose"]::before   { background: radial-gradient(circle at top left, rgba(244,63,94,0.1) 0%, transparent 60%); }
+
+  .app-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+
+  .app-card:hover::before { opacity: 1; }
+  .app-card[data-color="blue"]:hover   { border-color: rgba(59,130,246,0.4); }
+  .app-card[data-color="amber"]:hover  { border-color: rgba(245,158,11,0.4); }
+  .app-card[data-color="green"]:hover  { border-color: rgba(16,185,129,0.4); }
+  .app-card[data-color="purple"]:hover { border-color: rgba(139,92,246,0.4); }
+  .app-card[data-color="rose"]:hover   { border-color: rgba(244,63,94,0.4); }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .card-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .card-icon.blue   { background: rgba(59,130,246,0.15); }
+  .card-icon.amber  { background: rgba(245,158,11,0.15); }
+  .card-icon.green  { background: rgba(16,185,129,0.15); }
+  .card-icon.purple { background: rgba(139,92,246,0.15); }
+  .card-icon.rose   { background: rgba(244,63,94,0.15); }
+
+  .arrow {
+    color: var(--muted);
+    font-size: 18px;
+    transition: transform 0.25s, color 0.25s;
+  }
+
+  .app-card:hover .arrow { transform: translate(3px, -3px); color: var(--text); }
+
+  .card-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .card-tag {
+    display: inline-block;
+    margin-top: 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+  }
+
+  .card-tag.blue   { color: var(--accent); }
+  .card-tag.amber  { color: var(--accent2); }
+  .card-tag.green  { color: var(--accent3); }
+  .card-tag.purple { color: #a78bfa; }
+  .card-tag.rose   { color: #fb7185; }
+
+  /* Coming Soon overlay */
+  .app-card.coming-soon {
+    opacity: 0.6;
+    cursor: default;
+    pointer-events: all;
+  }
+
+  .app-card.coming-soon:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .cs-badge {
+    display: inline-block;
+    background: rgba(100,116,139,0.2);
+    border: 1px solid rgba(100,116,139,0.3);
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-top: 14px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 72px;
+    text-align: center;
+    animation: fadeUp 0.6s 0.6s ease both;
+  }
+
+  .footer-line {
+    width: 60px;
+    height: 1px;
+    background: var(--border);
+    margin: 0 auto 20px;
+  }
+
+  .footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .footer p span { color: var(--accent); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .stats { flex-direction: column; gap: 0; }
+    .stat { padding: 14px; }
+    .wrapper { padding: 40px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="badge">Konstruksi UPT Probolinggo</div>
+    <div class="logo-wrap">
+      <div class="logo-icon">⚡</div>
+      <h1>KONSPBLG<br>SUPER APP</h1>
+    </div>
+    <p class="tagline">Everything. Everywhere. <span>Instantly</span></p>
+    <p class="subinfo">PT PLN (Persero) UIT JBM — UPT Probolinggo</p>
+  </header>
+
+  <!-- APPS -->
+  <p class="section-title">// Daftar Aplikasi</p>
+
+  <div class="apps-grid" id="apps-grid">
+
+    <!-- JADWAL VENDOR -->
+    <a class="app-card" data-color="blue" href="https://konspblg.github.io/jadwal-vendor/" target="_blank" rel="noopener">
+      <div class="card-top">
+        <div class="card-icon blue">📅</div>
+        <span class="arrow">↗</span>
+      </div>
+      <div class="card-name">Jadwal Vendor</div>
+      <div class="card-desc">Monitoring jadwal & progress pekerjaan vendor / pihak ketiga secara real-time.</div>
+      <span class="card-tag blue">Live</span>
+    </a>
+
+    <!-- KHS MTU -->
+    <a class="app-card" data-color="amber" href="https://konspblg.github.io/khsmtupblg/" target="_blank" rel="noopener">
+      <div class="card-top">
+        <div class="card-icon amber">🔌</div>
+        <span class="arrow">↗</span>
+      </div>
+      <div class="card-name">KHS MTU</div>
+      <div class="card-desc">Dashboard monitoring penggantian MTU SCM UPT Probolinggo.</div>
+      <span class="card-tag amber">Live</span>
+    </a>
+
+    <!-- TOWER FINDER -->
+    <a class="app-card" data-color="green" href="https://github.com/konspblg/tower-finder" target="_blank" rel="noopener">
+      <div class="card-top">
+        <div class="card-icon green">📡</div>
+        <span class="arrow">↗</span>
+      </div>
+      <div class="card-name">Tower Finder</div>
+      <div class="card-desc">Fitur pencarian data dan lokasi tower di wilayah UPT Probolinggo.</div>
+      <span class="card-tag green">Live</span>
+    </a>
+
+    <!-- REKAP SLO -->
+    <div class="app-card coming-soon" data-color="purple">
+      <div class="card-top">
+        <div class="card-icon purple">📋</div>
+        <span class="arrow" style="opacity:0.3">↗</span>
+      </div>
+      <div class="card-name">Rekap SLO</div>
+      <div class="card-desc">Rekap dan monitoring Syarat Laik Operasi (SLO) aset transmisi UPT Probolinggo.</div>
+      <span class="cs-badge">In Development</span>
+    </div>
+
+    <!-- PLACEHOLDER — mudah ditambah, tinggal copy blok di bawah -->
+    <!--
+    <a class="app-card" data-color="rose" href="URL_APLIKASI" target="_blank" rel="noopener">
+      <div class="card-top">
+        <div class="card-icon rose">🗂️</div>
+        <span class="arrow">↗</span>
+      </div>
+      <div class="card-name">Nama Aplikasi</div>
+      <div class="card-desc">Deskripsi singkat fungsi aplikasi ini.</div>
+      <span class="card-tag rose">Live</span>
+    </a>
+    -->
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-line"></div>
+    <p>
+      Dikembangkan oleh <span>Konstruksi UPT Probolinggo</span><br>
+      PT PLN (Persero) UIT JBM &nbsp;·&nbsp; <span id="year"></span>
+    </p>
+  </footer>
+
+</div>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
